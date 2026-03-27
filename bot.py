@@ -79,7 +79,7 @@ admin_keyboard = ReplyKeyboardMarkup(
 
 
 # Настройка Gemini (новая библиотека)
-GEMINI_KEY = "AIzaSyBKfvxZvaCcV45ycO2w0lH4MYAEhPcOH4"  # ВАШ КЛЮЧ
+GEMINI_KEY = "AIzaSyBKfvxZvaCcV45yCrO2WOLH4MYAEhPc0H4"  # ВАШ КЛЮЧ
 client = genai.Client(api_key=GEMINI_KEY)
 
 async def ask_openrouter(prompt, history=None):
