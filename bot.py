@@ -21,7 +21,7 @@ from datetime import datetime
 TOKEN = "8360813002:AAFe0ONoF76RswDIIQIKpCyL2G0vS3kpnBg"
 ADMIN_USERNAME = "fuexu"
 PASSWORD = "admin123"
-
+GEMINI_API_KEY = "AIzaSyBs7cuuLOJpjE-zja_UMBGjwocE1xNSFe0"
 
 # ===== ИНИЦИАЛИЗАЦИЯ =====
 storage = MemoryStorage()
@@ -79,7 +79,7 @@ admin_keyboard = ReplyKeyboardMarkup(
 
 
 # Настройка Gemini (новая библиотека)
-GEMINI_KEY = "AIzaSyBs7cuuLOJpjE-zja_UMBGjwocE1xNSFe0"  # ВАШ КЛЮЧ
+GEMINI_API_KEY = "AIzaSyBs7cuuLOJpjE-zja_UMBGjwocE1xNSFe0"  # ВАШ КЛЮЧ
 client = genai.Client(api_key=GEMINI_KEY)
 
 async def ask_openrouter(prompt, history=None):
@@ -93,8 +93,7 @@ async def ask_openrouter(prompt, history=None):
             full_prompt = prompt
         
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents=full_prompt
+    model="gemini-3-flash-preview", contents="Explain how AI works in a few words"
         )
         return response.text
         
