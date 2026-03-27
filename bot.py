@@ -3,11 +3,7 @@
 TELEGRAM БОТ С OPENROUTER API И АДМИН-ПАНЕЛЬЮ
 РАЗРАБОТЧИК: Тороп Никита
 """
-
-import google.generativeai as genai
-
-# Настройка Gemini
-genai.configure("api_key=AIzaSyBKfvxZvaCcV45yCrO2WOLH4MYAEhPc0H4")  # Вставьте ключ сюда
+from google import genai
 import asyncio
 import aiohttp
 import json
@@ -81,11 +77,14 @@ admin_keyboard = ReplyKeyboardMarkup(
 
 # ===== ФУНКЦИЯ OPENROUTER API =====
 
+
+# Настройка Gemini (новая библиотека)
+GEMINI_KEY = "AIzaSyBKfvxZvaCcV45ycO2w0lH4MYAEhPcOH4"  # ВАШ КЛЮЧ
+client = genai.Client(api_key=GEMINI_KEY)
+
 async def ask_openrouter(prompt, history=None):
-    """ChatGPT через Gemini API (бесплатно)"""
+    """ChatGPT через Gemini API"""
     try:
-        model = genai.GenerativeModel('gemini-1.0-pro')
-        
         # Добавляем историю для контекста
         if history and len(history) > 0:
             context = "\n".join([msg["content"] for msg in history[-5:]])
@@ -93,7 +92,10 @@ async def ask_openrouter(prompt, history=None):
         else:
             full_prompt = prompt
         
-        response = await model.generate_content_async(full_prompt)
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=full_prompt
+        )
         return response.text
         
     except Exception as e:
