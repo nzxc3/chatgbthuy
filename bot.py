@@ -3,7 +3,9 @@
 TELEGRAM БОТ С OPENROUTER API И АДМИН-ПАНЕЛЬЮ
 РАЗРАБОТЧИК: Тороп Никита
 """
-from google import genai
+mport cohere
+co = cohere.AsyncClient("NvcETEckdlP58mCi4e04wtatU6X0R5aN5QkAmfjF")
+
 import asyncio
 import aiohttp
 import json
@@ -21,7 +23,6 @@ from datetime import datetime
 TOKEN = "8360813002:AAFe0ONoF76RswDIIQIKpCyL2G0vS3kpnBg"
 ADMIN_USERNAME = "fuexu"
 PASSWORD = "admin123"
-GEMINI_API_KEY = "AIzaSyBs7cuuLOJpjE-zja_UMBGjwocE1xNSFe0"
 
 # ===== ИНИЦИАЛИЗАЦИЯ =====
 storage = MemoryStorage()
@@ -78,27 +79,13 @@ admin_keyboard = ReplyKeyboardMarkup(
 # ===== ФУНКЦИЯ OPENROUTER API =====
 
 
-# Настройка Gemini (новая библиотека)
-GEMINI_API_KEY = "AIzaSyBs7cuuLOJpjE-zja_UMBGjwocE1xNSFe0"  # ВАШ КЛЮЧ
-client = genai.Client(api_key=GEMINI_KEY)
-
-async def ask_openrouter(prompt, history=None):
-    """ChatGPT через Gemini API"""
-    try:
-        # Добавляем историю для контекста
-        if history and len(history) > 0:
-            context = "\n".join([msg["content"] for msg in history[-5:]])
-            full_prompt = f"Предыдущий диалог:\n{context}\n\nТекущий вопрос:\n{prompt}"
-        else:
-            full_prompt = prompt
-        
-        response = client.models.generate_content(
-    model="gemini-3-flash-preview", contents="Explain how AI works in a few words"
-        )
-        return response.text
-        
-    except Exception as e:
-        return f"⚠️ Ошибка Gemini: {str(e)}"
+async def ask_cohere(prompt):
+    response = await co.generate(
+        model="command-r",
+        prompt=prompt,
+        max_tokens=500
+    )
+    return response.generations[0].text
 
 # ===== ПРОВЕРКА АДМИНА =====
 def is_admin(username):
